@@ -1,58 +1,17 @@
-const generatePDF = async (name) => {
-    const { PDFDocument, rgb, degrees } = PDFLib;
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 
-    const existingPdfBytes = await fetch("./certificate.pdf").then((res) =>
-      res.arrayBuffer()
-    );
-    const pdfDoc = await PDFDocument.load(existingPdfBytes);
-    pdfDoc.registerFontkit(fontkit);
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
 
-    const fontBytes = await fetch("./Sanchez-Regular.ttf").then((res) =>
-    res.arrayBuffer()
-  );
-  
-
-  pdfDoc.registerFontkit(fontkit);
-  const SanChezFont = await pdfDoc.embedFont(fontBytes);
-  const pages = pdfDoc.getPages();
-  const firstPage = pages[0];
-
-  // Draw a string of text diagonally across the first page
-  firstPage.drawText(name, {
-    x: 300,
-    y: 270,
-    size: 25,
-    font: SanChezFont,
-    color: rgb(0.0, 0.0, 0.0),
-  });
-
-  const uri = await pdfDoc.saveAsBase64({ dataUri: true });
-  document.querySelector("#mypdf").src = uri;
-  saveAs(uri,"DEGREES.pdf",{autoBom:true});
- 
-
-} ;
-
-
-const userName = document.getElementById("name");
-const submitBtn = document.getElementById("submitBtn");
-
-const { PDFDocument, rgb, degrees } = PDFLib;
-
-
-const capitalize = (str, lower = false) =>
-  (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) =>
-    match.toUpperCase()
-  );
-
-submitBtn.addEventListener("click", () => {
-  const val = capitalize(userName.value);
-
-  //check if the text is empty or not
-  if (val.trim() !== "" && userName.checkValidity()) {
-    // console.log(val);
-    generatePDF(val);
-  } else {
-    userName.reportValidity();
-  }
-});
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
